@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nely's Passion Heart | Handmade Cake Café</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          letterSpacing: {
+            heritage: '0.18em'
+          },
+          colors: {
+            cream: '#F7F1E8',
+            burgundy: '#8B2635',
+            gold: '#C49A5A',
+            jade: '#4E7C59',
+            porcelain: '#315D7C',
+            espresso: '#2B1A12',
+            paper: '#efe4d4'
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            script: ['"Great Vibes"', 'cursive'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+            editorial: ['Lora', 'serif'],
+            menuTitle: ['"Great Vibes"', 'cursive'],
+            menuItem: ['"Great Vibes"', 'cursive']
+          },
+          boxShadow: {
+            frame: '0 20px 60px rgba(43,26,18,0.18)',
+            float: '0 16px 40px rgba(139,38,53,0.16)'
+          },
+          backgroundImage: {
+            paper: 'radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 32%), linear-gradient(135deg, rgba(196,154,90,0.12), transparent 30%)',
+            tile: 'linear-gradient(45deg, rgba(49,93,124,0.08) 25%, transparent 25%), linear-gradient(-45deg, rgba(78,124,89,0.08) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(196,154,90,0.12) 75%), linear-gradient(-45deg, transparent 75%, rgba(139,38,53,0.08) 75%)'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion/dist/framer-motion.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Lora:wght@400;500;600&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: #2B1A12;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,255,255,0.45), transparent 18%),
+        linear-gradient(180deg, rgba(247,241,232,1) 0%, rgba(240,231,219,1) 100%);
+      font-family: Inter, system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image:
+        radial-gradient(rgba(139,38,53,0.08) 0.6px, transparent 0.6px),
+        radial-gradient(rgba(43,26,18,0.03) 0.6px, transparent 0.6px);
+      background-size: 16px 16px, 24px 24px;
+      background-position: 0 0, 8px 8px;
+      mix-blend-mode: multiply;
+    }
+    .paper-card {
+      background: linear-gradient(180deg, rgba(255,252,247,0.94), rgba(246,238,227,0.96));
+      border: 1px solid rgba(196,154,90,0.35);
+      box-shadow: 0 14px 40px rgba(43,26,18,0.09);
+    }
+    .vintage-frame {
+      border: 1px solid rgba(196,154,90,0.55);
+      box-shadow: inset 0 0 0 6px rgba(255,248,240,0.65), inset 0 0 0 7px rgba(139,38,53,0.14), 0 20px 50px rgba(43,26,18,0.18);
+      background: linear-gradient(180deg, rgba(119,76,35,0.12), rgba(255,255,255,0.08));
+    }
+    .tile-strip {
+      background-image:
+        linear-gradient(45deg, #315D7C 25%, transparent 25%),
+        linear-gradient(-45deg, #4E7C59 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #C49A5A 75%),
+        linear-gradient(-45deg, transparent 75%, #8B2635 75%);
+      background-size: 24px 24px;
+    }
+    .menu-scroll::-webkit-scrollbar,
+    .x-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+    .menu-scroll::-webkit-scrollbar-thumb,
+    .x-scroll::-webkit-scrollbar-thumb { background: rgba(139,38,53,0.35); border-radius: 999px; }
+    .steam span {
+      position: absolute;
+      bottom: 0;
+      width: 10px;
+      height: 60px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+      filter: blur(1px);
+      animation: steam 5s ease-in-out infinite;
+      opacity: 0;
+    }
+    .steam span:nth-child(1) { left: 8px; animation-delay: 0s; }
+    .steam span:nth-child(2) { left: 22px; animation-delay: 1.2s; }
+    .steam span:nth-child(3) { left: 36px; animation-delay: 2.4s; }
+    @keyframes steam {
+      0% { transform: translateY(8px) scaleX(0.9); opacity: 0; }
+      30% { opacity: 0.45; }
+      100% { transform: translateY(-72px) translateX(6px) scaleX(1.25); opacity: 0; }
+    }
+    @keyframes postcardMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes heroFloat {
+      0%, 100% { transform: scale(1.03) translate3d(0, 0, 0); }
+      25% { transform: scale(1.06) translate3d(-10px, -6px, 0); }
+      50% { transform: scale(1.05) translate3d(8px, -10px, 0); }
+      75% { transform: scale(1.04) translate3d(-6px, 8px, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useMemo, useState } = React;
+    const { motion, AnimatePresence } = Motion;
+
+    const menuPoster = './menu.png';
+    const cakePoster = './cake.png';
+    const shopBackground = './shop.png';
+    const logoImage = './logo.png';
+
+    const featureCards = [
+      { title: 'Homemade Cakes', copy: 'Crafted slices displayed like treasures inside a heritage cabinet.', icon: '🍰' },
+      { title: 'Comfort Food', copy: 'Warm mains and small bites with old café comfort and polish.', icon: '🥘' },
+      { title: 'Signature Coffee', copy: 'Steam, crema and refined café ritual in a Penang-inspired setting.', icon: '☕' },
+      { title: 'Tea for Two', copy: 'Soft floral tea moments with a refined old-world mood.', icon: '🫖' },
+      { title: 'Refreshing Drinks', copy: 'Nutmeg, citrus and fruit drinks with bright, jewel-like presentation.', icon: '🍹' }
+    ];
+
+    const sidebarSections = [
+      'Mains', 'Pasta', 'Salad', 'Small Bites', 'Caffeinated', 'Caffeine-Free', 'Refreshing Drinks', 'Milkshakes', 'Tea for Two'
+    ];
+
+    const interactiveCategories = [
+      'Mains', 'Pasta', 'Salad', 'Small Bites', 'Caffeinated', 'Caffeine-Free', 'Refreshing Drinks', 'Milkshakes', 'Tea for Two'
+    ];
+
+    const menuItems = [
+      { name: 'Nasi Lemak Chicken', category: 'Mains', price: 'RM16', recommended: true, note: 'Comforting heritage plate with fragrant rice and bold sambal.' },
+      { name: 'Jawa Mee', category: 'Mains', price: 'RM16', note: 'Options: Prawn Cracker, Fried Enoki.' },
+      { name: 'Prawn Cracker', category: 'Mains', price: 'RM5', note: 'Crunchy add-on.' },
+
+      { name: 'Aglio Olio, Broccoli & Mushroom', category: 'Pasta', price: 'RM21', tag: 'Aglio Olio' },
+      { name: 'Aglio Olio, Grilled Chicken', category: 'Pasta', price: 'RM24', tag: 'Aglio Olio' },
+      { name: 'Aglio Olio, Smoked Salmon', category: 'Pasta', price: 'RM28', tag: 'Aglio Olio' },
+      { name: 'Pesto, Grilled Tomato', category: 'Pasta', price: 'RM22', tag: 'Pesto' },
+      { name: 'Pesto, Grilled Chicken', category: 'Pasta', price: 'RM25', tag: 'Pesto' },
+      { name: 'Pesto, Popcorn Chicken', category: 'Pasta', price: 'RM25', tag: 'Pesto' },
+      { name: 'Pesto, Smoked Salmon', category: 'Pasta', price: 'RM29', tag: 'Pesto' },
+      { name: 'Carbonara, Broccoli & Mushroom', category: 'Pasta', price: 'RM23', tag: 'Carbonara' },
+      { name: 'Carbonara, Mushroom & Ham', category: 'Pasta', price: 'RM24', tag: 'Carbonara' },
+      { name: 'Carbonara, Smoked Salmon', category: 'Pasta', price: 'RM29', tag: 'Carbonara' },
+      { name: 'Pasta Add-on, Spaghetti', category: 'Pasta', price: 'RM3', tag: 'Add-on' },
+      { name: 'Pasta Add-on, Broccoli', category: 'Pasta', price: 'RM4', tag: 'Add-on' },
+      { name: 'Pasta Add-on, Mushroom', category: 'Pasta', price: 'RM4', tag: 'Add-on' },
+      { name: 'Pasta Add-on, Chicken Ham', category: 'Pasta', price: 'RM5', tag: 'Add-on' },
+      { name: 'Pasta Add-on, Smoked Salmon', category: 'Pasta', price: 'RM9', tag: 'Add-on' },
+
+      { name: 'Potato Salad', category: 'Salad', price: 'RM15', note: 'Diced potato, egg, onions, diced cucumber & tomato, mayo.' },
+      { name: 'House Salad', category: 'Salad', price: 'RM16', note: 'Fresh greens, olive oil, balsamic vinegar.' },
+      { name: 'Salad Add-on, Smoked Salmon', category: 'Salad', price: 'RM9', tag: 'Add-on' },
+      { name: 'Salad Add-on, Grilled Chicken', category: 'Salad', price: 'RM8', tag: 'Add-on' },
+      { name: 'Salad Add-on, Popcorn Chicken', category: 'Salad', price: 'RM8', tag: 'Add-on' },
+
+      { name: 'Fried Enoki', category: 'Small Bites', price: 'RM13' },
+      { name: 'French Fries with Parmesan Cheese', category: 'Small Bites', price: 'RM16' },
+      { name: 'Chicken Finger', category: 'Small Bites', price: 'RM18' },
+      { name: 'Chicken Finger Pesto', category: 'Small Bites', price: 'RM26', recommended: true },
+
+      { name: 'Espresso', category: 'Caffeinated', hot: 'RM8', note: 'Hot only' },
+      { name: 'Americano', category: 'Caffeinated', hot: 'RM9', cold: 'RM10' },
+      { name: 'Piccolo Latte', category: 'Caffeinated', hot: 'RM10', note: 'Hot only' },
+      { name: 'Koi Black', category: 'Caffeinated', cold: 'RM15', note: 'Cold only' },
+      { name: 'Citrus Black', category: 'Caffeinated', cold: 'RM15', note: 'Cold only' },
+      { name: 'Coffee Limonade', category: 'Caffeinated', cold: 'RM15', note: 'Cold only' },
+      { name: 'Flat White', category: 'Caffeinated', hot: 'RM13' },
+      { name: 'Latte', category: 'Caffeinated', hot: 'RM13', cold: 'RM14' },
+      { name: 'Cappuccino', category: 'Caffeinated', hot: 'RM13', cold: 'RM14' },
+      { name: 'Affogato', category: 'Caffeinated', cold: 'RM14', note: 'Cold only' },
+      { name: 'Mocha', category: 'Caffeinated', hot: 'RM14', cold: 'RM15' },
+      { name: 'Caramel Latte', category: 'Caffeinated', hot: 'RM14', cold: 'RM15' },
+      { name: 'Hazelnut Latte', category: 'Caffeinated', hot: 'RM14', cold: 'RM15' },
+      { name: 'Matcha Latte', category: 'Caffeinated', hot: 'RM16', cold: 'RM17' },
+      { name: 'Hojicha Latte', category: 'Caffeinated', hot: 'RM16', cold: 'RM17' },
+      { name: 'Genmaicha Latte', category: 'Caffeinated', hot: 'RM16', cold: 'RM17' },
+      { name: 'Upgrade to Oat Milk', category: 'Caffeinated', price: '+RM2', tag: 'Add-on' },
+
+      { name: 'Fresh Milk', category: 'Caffeine-Free', hot: 'RM6', cold: 'RM8' },
+      { name: 'Barley Grass Honey Lemon', category: 'Caffeine-Free', hot: 'RM12', cold: 'RM13' },
+      { name: 'Barley Grass Honey Milk', category: 'Caffeine-Free', hot: 'RM12', cold: 'RM13' },
+      { name: 'Chocolate', category: 'Caffeine-Free', hot: 'RM14', cold: 'RM15' },
+
+      { name: 'Lemonade', category: 'Refreshing Drinks', hot: 'RM7', cold: 'RM8' },
+      { name: 'Nutmeg', category: 'Refreshing Drinks', hot: 'RM7', cold: 'RM8' },
+      { name: 'Lemon Tea', category: 'Refreshing Drinks', hot: 'RM8', cold: 'RM9' },
+      { name: 'Honey Lemon', category: 'Refreshing Drinks', hot: 'RM8', cold: 'RM9' },
+      { name: 'Apple Juice', category: 'Refreshing Drinks', cold: 'RM11', note: 'Cold only' },
+      { name: 'Orange Juice', category: 'Refreshing Drinks', cold: 'RM11', note: 'Cold only' },
+      { name: 'Carrot Juice', category: 'Refreshing Drinks', cold: 'RM11', note: 'Cold only' },
+      { name: 'So Lime', category: 'Refreshing Drinks', cold: 'RM14', note: 'Lime, mint, sour plum', recommended: true },
+      { name: 'Sunkisses', category: 'Refreshing Drinks', cold: 'RM14', note: 'Calamansi orange' },
+      { name: 'Oh Nana', category: 'Refreshing Drinks', cold: 'RM15', note: 'Ribena, pineapple, rambutan' },
+
+      { name: 'Vanilla', category: 'Milkshakes', price: 'RM16' },
+      { name: 'Banana', category: 'Milkshakes', price: 'RM16' },
+      { name: 'Oreo', category: 'Milkshakes', price: 'RM18' },
+      { name: 'Chocolate', category: 'Milkshakes', price: 'RM18' },
+      { name: 'Matcha', category: 'Milkshakes', price: 'RM18' },
+      { name: 'Hojicha', category: 'Milkshakes', price: 'RM18' },
+      { name: 'Choco Banana', category: 'Milkshakes', price: 'RM18' },
+
+      { name: 'Peppermint', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Chamomile', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Jasmine Green', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Earl Grey', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Rose Tea', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'English Breakfast', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Ginger & Lemon', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Roselle Peppermint', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Lemongrass Pandan', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Lemongrass Peppermint', category: 'Tea for Two', price: 'RM13 / pot', tag: 'Pot of Tea' },
+      { name: 'Beauty Tonic', category: 'Tea for Two', price: 'RM15 / pot', tag: 'Premium Tea', note: 'Lemon, rosebud, goji berry & jasmine tea.' },
+      { name: 'Six Treasure', category: 'Tea for Two', price: 'RM15 / pot', tag: 'Premium Tea', note: 'Rosebud, roselle jasmine, chrysanthemum, red dates, goji berry, longan & rock sugar.', recommended: true },
+      { name: 'Beauty Skin', category: 'Tea for Two', price: 'RM15 / pot', tag: 'Premium Tea', note: 'Rosebud, jasmine, chrysanthemum, red date & goji berry.' },
+    ];
+
+
+    const menuItemImages = {
+      'Nasi Lemak Chicken': './generated-menu-items/item-nasi-lemak-chicken.png',
+      'Jawa Mee': './generated-menu-items/item-jawa-mee.png',
+      'Prawn Cracker': './generated-menu-items/item-prawn-cracker.png',
+      'Aglio Olio, Broccoli & Mushroom': './generated-menu-items/item-aglio-olio-broccoli-and-mushroom.png',
+      'Aglio Olio, Grilled Chicken': './generated-menu-items/item-aglio-olio-grilled-chicken.png',
+      'Aglio Olio, Smoked Salmon': './generated-menu-items/item-aglio-olio-smoked-salmon.png',
+      'Pesto, Grilled Tomato': './generated-menu-items/item-pesto-grilled-tomato.png',
+      'Pesto, Grilled Chicken': './generated-menu-items/item-pesto-grilled-chicken.png',
+      'Pesto, Popcorn Chicken': './generated-menu-items/item-pesto-popcorn-chicken.png',
+      'Pesto, Smoked Salmon': './generated-menu-items/item-pesto-smoked-salmon.png',
+      'Carbonara, Broccoli & Mushroom': './generated-menu-items/item-carbonara-broccoli-and-mushroom.png',
+      'Carbonara, Mushroom & Ham': './generated-menu-items/item-carbonara-mushroom-and-ham.png',
+      'Carbonara, Smoked Salmon': './generated-menu-items/item-carbonara-smoked-salmon.png',
+      'Pasta Add-on, Spaghetti': './generated-menu-items/item-pasta-add-on-spaghetti.png',
+      'Pasta Add-on, Broccoli': './generated-menu-items/item-pasta-add-on-broccoli.png',
+      'Pasta Add-on, Mushroom': './generated-menu-items/item-pasta-add-on-mushroom.png',
+      'Pasta Add-on, Chicken Ham': './generated-menu-items/item-pasta-add-on-chicken-ham.png',
+      'Pasta Add-on, Smoked Salmon': './generated-menu-items/item-pasta-add-on-smoked-salmon.png',
+      'Potato Salad': './generated-menu-items/item-potato-salad.png',
+      'House Salad': './generated-menu-items/item-house-salad.png',
+      'Salad Add-on, Smoked Salmon': './generated-menu-items/item-salad-add-on-smoked-salmon.png',
+      'Salad Add-on, Grilled Chicken': './generated-menu-items/item-salad-add-on-grilled-chicken.png',
+      'Salad Add-on, Popcorn Chicken': './generated-menu-items/item-salad-add-on-popcorn-chicken.png',
+      'Fried Enoki': './generated-menu-items/item-fried-enoki.png',
+      'French Fries with Parmesan Cheese': './generated-menu-items/item-french-fries-with-parmesan-cheese.png',
+      'Chicken Finger': './generated-menu-items/item-chicken-finger.png',
+      'Chicken Finger Pesto': './generated-menu-items/item-chicken-finger-pesto.png',
+      'Espresso': './generated-menu-items/item-espresso.png',
+      'Americano': './generated-menu-items/item-americano.png',
+      'Piccolo Latte': './generated-menu-items/item-piccolo-latte.png',
+      'Koi Black': './generated-menu-items/item-koi-black.png',
+      'Citrus Black': './generated-menu-items/item-citrus-black.png',
+      'Coffee Limonade': './generated-menu-items/item-coffee-limonade.png',
+      'Flat White': './generated-menu-items/item-flat-white.png',
+      'Latte': './generated-menu-items/item-latte.png',
+      'Cappuccino': './generated-menu-items/item-cappuccino.png',
+      'Affogato': './generated-menu-items/item-affogato.png',
+      'Mocha': './generated-menu-items/item-mocha.png',
+      'Caramel Latte': './generated-menu-items/item-caramel-latte.png',
+      'Hazelnut Latte': './generated-menu-items/item-hazelnut-latte.png',
+      'Matcha Latte': './generated-menu-items/item-matcha-latte.png',
+      'Hojicha Latte': './generated-menu-items/item-hojicha-latte.png',
+      'Genmaicha Latte': './generated-menu-items/item-genmaicha-latte.png',
+      'Upgrade to Oat Milk': './generated-menu-items/item-upgrade-to-oat-milk.png',
+      'Fresh Milk': './generated-menu-items/item-fresh-milk.png',
+      'Barley Grass Honey Lemon': './generated-menu-items/item-barley-grass-honey-lemon.png',
+      'Barley Grass Honey Milk': './generated-menu-items/item-barley-grass-honey-milk.png',
+      'Chocolate': './generated-menu-items/item-chocolate.png',
+      'Lemonade': './generated-menu-items/item-lemonade.png',
+      'Nutmeg': './generated-menu-items/item-nutmeg.png',
+      'Lemon Tea': './generated-menu-items/item-lemon-tea.png',
+      'Honey Lemon': './generated-menu-items/item-honey-lemon.png',
+      'Apple Juice': './generated-menu-items/item-apple-juice.png',
+      'Orange Juice': './generated-menu-items/item-orange-juice.png',
+      'Carrot Juice': './generated-menu-items/item-carrot-juice.png',
+      'So Lime': './generated-menu-items/item-so-lime.png',
+      'Sunkisses': './generated-menu-items/item-sunkisses.png',
+      'Oh Nana': './generated-menu-items/item-oh-nana.png',
+      'Vanilla': './generated-menu-items/item-vanilla.png',
+      'Banana': './generated-menu-items/item-banana.png',
+      'Oreo': './generated-menu-items/item-oreo.png',
+      'Matcha': './generated-menu-items/item-matcha.png',
+      'Hojicha': './generated-menu-items/item-hojicha.png',
+      'Choco Banana': './generated-menu-items/item-choco-banana.png',
+      'Peppermint': './generated-menu-items/item-peppermint.png',
+      'Chamomile': './generated-menu-items/item-chamomile.png',
+      'Jasmine Green': './generated-menu-items/item-jasmine-green.png',
+      'Earl Grey': './generated-menu-items/item-earl-grey.png',
+      'Rose Tea': './generated-menu-items/item-rose-tea.png',
+      'English Breakfast': './generated-menu-items/item-english-breakfast.png',
+      'Ginger & Lemon': './generated-menu-items/item-ginger-and-lemon.png',
+      'Roselle Peppermint': './generated-menu-items/item-roselle-peppermint.png',
+      'Lemongrass Pandan': './generated-menu-items/item-lemongrass-pandan.png',
+      'Lemongrass Peppermint': './generated-menu-items/item-lemongrass-peppermint.png',
+      'Beauty Tonic': './generated-menu-items/item-beauty-tonic.png',
+      'Six Treasure': './generated-menu-items/item-six-treasure.png',
+      'Beauty Skin': './generated-menu-items/item-beauty-skin.png',
+    };
+
+    const cakes = [
+      ['Coffee Almond', 'RM20', 'Chocolate / Coffee', 'Nutty roast aroma with a polished café finish.'],
+      ['Choc Mint', 'RM18', 'Chocolate / Coffee', 'Cool mint against dark cocoa richness.'],
+      ['Tiramisu w/ Rum', 'RM22', 'Chocolate / Coffee', 'Espresso-soaked layers with a warm rum kiss.'],
+      ['Rum Raisin', 'RM22', 'Heritage Flavors', 'Old-world sweetness with soaked raisins.'],
+      ['Blackforest w/ Red Wine', 'RM22', 'Chocolate / Coffee', 'Dark cherry decadence with elegant depth.'],
+      ['Oreo Cheese', 'RM20', 'Cheesecake', 'Crunchy cookies folded into creamy cheesecake.'],
+      ['Mango Passionfruit', 'RM20', 'Fruit', 'Tropical brightness with silky tang.'],
+      ['Lemon Meringue', 'RM16', 'Fruit', 'Light citrus with airy brûléed sweetness.'],
+      ['Strawberry Cheese', 'RM22', 'Cheesecake', 'Classic berry cheesecake comfort.'],
+      ['Mango Cheese', 'RM20', 'Cheesecake', 'Sunny mango swirled into velvety cream cheese.'],
+      ['Choc Cheese', 'RM20', 'Cheesecake', 'Chocolate and cream cheese in a rich pairing.'],
+      ['Hummingbird (Banana, Pineapple)', 'RM20', 'Heritage Flavors', 'Moist tropical crumb with nostalgic spice.'],
+      ['Strawberry Rose Cheese', 'RM28', 'Fruit', 'Perfumed rose and berry notes, especially elegant.'],
+      ['Blueberry Cheese', 'RM20', 'Cheesecake', 'Blueberry compote over creamy tang.'],
+      ['Choc Fudge', 'RM20', 'Chocolate / Coffee', 'Dense and glossy for serious chocolate lovers.'],
+      ['Cempedak Cheese', 'RM20', 'Heritage Flavors', 'Local fruit aroma in luscious cheesecake form.'],
+      ['Onde Onde', 'RM18', 'Heritage Flavors', 'Gula melaka and pandan in a beloved local profile.'],
+      ['Pomelo Cheese', 'RM22', 'Fruit', 'Bright pomelo lift with gentle tartness.'],
+      ['Russian Cheese', 'RM18', 'Cheesecake', 'Simple, creamy and old-school.'],
+      ['Banana Hazelnut Cheese', 'RM20', 'Cheesecake', 'Comforting banana richness with nutty depth.'],
+      ['Lemon Cheese', 'RM18', 'Cheesecake', 'Clean citrus finish and balanced creaminess.'],
+      ['Durian Fresh Cream', 'RM21', 'Durian Specials', 'Soft fresh cream with expressive durian perfume.'],
+      ['Durian Mud Pie', 'RM22', 'Durian Specials', 'A bold, luxurious durian dessert moment.'],
+      ['Durian Cheese', 'RM21', 'Durian Specials', 'Durian folded into a creamy cheesecake body.'],
+      ['Kaya Burnt Cheese', 'RM20', 'Heritage Flavors', 'Burnt cheesecake with fragrant kaya character.'],
+    ].map(([name, price, tag, note]) => ({ name, price, tag, note }));
+
+    const cakeImages = {
+      'Coffee Almond': './generated-cakes/coffee-almond-cake.png',
+      'Choc Mint': './generated-cakes/choc-mint-cake.png',
+      'Tiramisu w/ Rum': './generated-cakes/tiramisu-rum-cake.png',
+      'Rum Raisin': './generated-cakes/rum-raisin-cake.png',
+      'Blackforest w/ Red Wine': './generated-cakes/blackforest-red-wine-cake.png',
+      'Oreo Cheese': './generated-cakes/oreo-cheese-cake.png',
+      'Mango Passionfruit': './generated-cakes/mango-passionfruit-cake.png',
+      'Lemon Meringue': './generated-cakes/lemon-meringue-cake.png',
+      'Strawberry Cheese': './generated-cakes/strawberry-cheese-cake.png',
+      'Mango Cheese': './generated-cakes/mango-cheese-cake.png',
+      'Choc Cheese': './generated-cakes/choc-cheese-cake.png',
+      'Hummingbird (Banana, Pineapple)': './generated-cakes/hummingbird-cake.png',
+      'Strawberry Rose Cheese': './generated-cakes/strawberry-rose-cheese-cake.png',
+      'Blueberry Cheese': './generated-cakes/blueberry-cheese-cake.png',
+      'Choc Fudge': './generated-cakes/choc-fudge-cake.png',
+      'Cempedak Cheese': './generated-cakes/cempedak-cheese-cake.png',
+      'Onde Onde': './generated-cakes/onde-onde-cake.png',
+      'Pomelo Cheese': './generated-cakes/pomelo-cheese-cake.png',
+      'Russian Cheese': './generated-cakes/russian-cheese-cake.png',
+      'Banana Hazelnut Cheese': './generated-cakes/banana-hazelnut-cheese-cake.png',
+      'Lemon Cheese': './generated-cakes/lemon-cheese-cake.png',
+      'Durian Fresh Cream': './generated-cakes/durian-fresh-cream-cake.png',
+      'Durian Mud Pie': './generated-cakes/durian-mud-pie-cake.png',
+      'Durian Cheese': './generated-cakes/durian-cheese-cake.png',
+      'Kaya Burnt Cheese': './generated-cakes/kaya-burnt-cheese-cake.png',
+    };
+
+    const showcasePanels = [
+      { title: 'Cake Cabinet', copy: 'A glowing cabinet of jewel-toned slices, as if preserved behind old glass and brass trim.' },
+      { title: 'Afternoon Tea Moment', copy: 'Tea pots, lace shadows, floral steam and the calm of a long Penang afternoon.' },
+      { title: 'Homemade Slice of the Day', copy: 'A rotating hero slice framed like a handwritten special on a café board.' },
+      { title: 'Durian Lovers’ Special', copy: 'A richer, deeper lane of the menu for those who want local indulgence.' },
+      { title: 'Heritage Flavour Collection', copy: 'Onde onde, cempedak and kaya in a dessert story rooted in place.' },
+    ];
+
+    const groupedSidebar = sidebarSections.map((section) => ({
+      title: section,
+      items: menuItems.filter((item) => item.category === section)
+    }));
+
+    function getPrice(item, mode) {
+      if (item.hot || item.cold) {
+        if (mode === 'hot') return item.hot ? `Hot ${item.hot}` : 'Not served hot';
+        if (mode === 'cold') return item.cold ? `Cold ${item.cold}` : 'Not served cold';
+        return [item.hot ? `Hot ${item.hot}` : null, item.cold ? `Cold ${item.cold}` : null].filter(Boolean).join(' / ');
+      }
+      return item.price || '';
+    }
+
+    function App() {
+      const [activeCategory, setActiveCategory] = useState('Mains');
+      const [query, setQuery] = useState('');
+      const [drinkMode, setDrinkMode] = useState('hot');
+      const [cakeFilter, setCakeFilter] = useState('All');
+      const [lightbox, setLightbox] = useState(false);
+
+      const selectMenuCategory = (category) => {
+        const pageTarget = document.getElementById('currentCategoryTop');
+        if (pageTarget) {
+          const y = pageTarget.getBoundingClientRect().top + window.pageYOffset - 110;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+        setActiveCategory(category);
+        setDrinkMode(category === 'Refreshing Drinks' ? 'cold' : 'hot');
+        setQuery('');
+        window.setTimeout(() => {
+          const menuList = document.getElementById('menuCardsTop');
+          if (menuList) menuList.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 80);
+      };
+
+      const isDrinkCategory = ['Caffeinated', 'Caffeine-Free', 'Refreshing Drinks'].includes(activeCategory);
+
+      const filteredMenu = useMemo(() => {
+        return menuItems.filter((item) => {
+          const categoryOk = item.category === activeCategory;
+          const searchText = [item.name, item.note, item.tag, item.category].filter(Boolean).join(' ').toLowerCase();
+          const searchOk = !query.trim() || searchText.includes(query.trim().toLowerCase());
+          const modeOk = !isDrinkCategory || drinkMode === 'all' || (drinkMode === 'hot' ? !!item.hot : !!item.cold);
+          return categoryOk && searchOk && modeOk;
+        });
+      }, [activeCategory, query, drinkMode, isDrinkCategory]);
+
+      const cakeTags = ['All', 'Cheesecake', 'Fruit', 'Chocolate / Coffee', 'Heritage Flavors', 'Durian Specials'];
+      const filteredCakes = cakes.filter((cake) => cakeFilter === 'All' || cake.tag === cakeFilter);
+
+      return (
+        <div>
+          <header className="sticky top-0 z-40 backdrop-blur-xl bg-[rgba(247,241,232,0.82)] border-b border-[rgba(139,38,53,0.12)]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+              <a href="#top">
+                <p className="font-script text-3xl text-burgundy leading-none">Nely’s Passion Heart</p>
+                <p className="text-[11px] uppercase tracking-[0.35em] text-espresso/70">Since 2013 • Handmade Cake Café</p>
+              </a>
+              <nav className="hidden lg:flex items-center gap-5 text-sm text-espresso/80">
+                {['Story','Highlights','Poster','Menu','Cakes','Visit'].map((item) => (
+                  <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-burgundy transition-colors">{item}</a>
+                ))}
+              </nav>
+              <a href="#menu" className="rounded-full border border-gold/60 px-4 py-2 text-sm font-medium text-burgundy hover:bg-burgundy hover:text-cream transition-colors">Browse Menu</a>
+            </div>
+          </header>
+
+          <main id="top">
+            <section className="relative overflow-hidden bg-transparent">
+              <div className="absolute inset-0">
+                <img src={shopBackground} alt="Nely's Passion Heart shopfront" className="w-full h-full object-cover scale-[1.03] opacity-20 animate-[heroFloat_14s_ease-in-out_infinite]" />
+              </div>
+              <div className="max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+                <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-center">
+                  <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+                    <span className="inline-flex items-center rounded-full border border-gold/50 px-4 py-2 text-xs tracking-[0.3em] uppercase text-burgundy bg-white/50">Homemade Cakes & Handmade Cake Café Since 2013</span>
+                    <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-burgundy max-w-3xl">A warm handmade cake café, lovingly brought to life online.</h1>
+                    <p className="mt-6 max-w-2xl text-lg leading-8 text-espresso/80 font-editorial">Homemade cakes, comforting meals, coffee and tea in a cozy café made for slow afternoons and sweet moments.</p>
+                    <div className="mt-8 flex flex-wrap gap-4">
+                      <a href="#menu" className="rounded-full bg-burgundy text-cream px-6 py-3 font-medium shadow-float hover:-translate-y-0.5 transition-transform">View Menu</a>
+                      <a href="#cakes" className="rounded-full border border-burgundy/40 px-6 py-3 font-medium text-burgundy hover:bg-white/50 transition-colors">Explore Cakes</a>
+                      <a href="#visit" className="rounded-full border border-gold/60 px-6 py-3 font-medium text-espresso hover:bg-gold/10 transition-colors">Find Us</a>
+                    </div>
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, delay: 0.15 }} className="paper-card rounded-[2rem] p-6 sm:p-8 relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-25 bg-tile" style={{ backgroundSize: '36px 36px' }} />
+                    <div className="relative">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-script text-4xl text-burgundy">Afternoon at the café</p>
+                          <p className="mt-2 text-sm uppercase tracking-[0.28em] text-espresso/60">Handcrafted • Cozy • Premium</p>
+                        </div>
+                        <div className="relative w-16 h-20 shrink-0">
+                          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-10 rounded-b-[16px] rounded-t-[8px] bg-gradient-to-b from-[#6d422a] to-[#2b1a12] border border-white/30" />
+                          <div className="absolute bottom-5 left-[52px] w-4 h-6 border-[3px] border-[#6d422a] rounded-r-full" />
+                          <div className="steam absolute left-3 bottom-12 w-12 h-20"><span></span><span></span><span></span></div>
+                        </div>
+                      </div>
+                      <div className="mt-8 grid sm:grid-cols-2 gap-4">
+                        <div className="rounded-[1.5rem] bg-white/70 p-5">
+                          <p className="text-xs uppercase tracking-[0.25em] text-gold">Signature slice</p>
+                          <h3 className="mt-3 font-display text-2xl text-burgundy">Strawberry Rose Cheese</h3>
+                          <p className="mt-3 text-sm leading-7 text-espresso/70">Rose-kissed elegance, berry brightness and a soft antique-dessert finish.</p>
+                        </div>
+                        <div className="rounded-[1.5rem] bg-white/70 p-5 flex flex-col items-center justify-center text-center">
+                          <p className="text-xs uppercase tracking-[0.25em] text-porcelain">House Logo</p>
+                          <div className="mt-4 rounded-[1.5rem] bg-white/80 border border-burgundy/10 p-4 shadow-sm">
+                            <img src={logoImage} alt="Nely's Passion Heart logo" className="w-32 h-32 sm:w-40 sm:h-40 object-contain mx-auto" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+
+            <section id="story" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.35em] text-jade">Our Café Story</p>
+                  <h2 className="mt-3 font-display text-4xl sm:text-5xl text-burgundy">A cozy handmade café built around cakes, comfort food and everyday warmth.</h2>
+                  <p className="mt-6 text-lg leading-8 text-espresso/75 font-editorial">Nely’s Passion Heart is a warm handmade cake café where people gather for fresh slices, comforting meals, coffee and tea.</p>
+                </div>
+                <div className="paper-card rounded-[2rem] p-6 sm:p-8 relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-25 bg-tile" style={{ backgroundSize: '40px 40px' }} />
+                  <div className="relative grid sm:grid-cols-2 gap-4">
+                    <div className="rounded-[1.5rem] bg-white/70 p-5 min-h-[180px]">
+                      <p className="text-xs uppercase tracking-[0.25em] text-gold">Layered paper</p>
+                      <p className="mt-3 font-display text-2xl text-burgundy">Handmade café mood</p>
+                    </div>
+                    <div className="rounded-[1.5rem] bg-white/70 p-5 min-h-[180px]">
+                      <p className="text-xs uppercase tracking-[0.25em] text-porcelain">Heritage collage</p>
+                      <p className="mt-3 font-display text-2xl text-burgundy">Cakes & coffee</p>
+                    </div>
+                    <div className="sm:col-span-2 rounded-[1.5rem] bg-[rgba(139,38,53,0.92)] text-cream p-6">
+                      <p className="font-script text-3xl">Simple, warm and welcoming</p>
+                      <p className="mt-2 text-sm leading-7 text-cream/85"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="highlights" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-18">
+              <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.35em] text-gold">Feature Highlights</p>
+                  <h2 className="mt-2 font-display text-4xl text-burgundy">The café experience, gathered into its most inviting highlights.</h2>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 xl:grid-cols-5 gap-5">
+                {featureCards.map((card, i) => (
+                  <motion.div key={card.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.06 }} whileHover={{ y: -8 }} className="paper-card rounded-[1.75rem] p-5">
+                    <div className="text-3xl">{card.icon}</div>
+                    <h3 className="mt-4 font-display text-2xl text-burgundy">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-espresso/70">{card.copy}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+
+            <section id="poster" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <div className="text-center max-w-3xl mx-auto">
+                <p className="text-sm uppercase tracking-[0.35em] text-porcelain">Menu Poster</p>
+                <h2 className="mt-3 font-display text-4xl sm:text-5xl text-burgundy">Our Full Café Menu</h2>
+                
+              </div>
+              <div className="mt-10 vintage-frame rounded-[2.25rem] p-4 sm:p-6 lg:p-8 bg-[rgba(95,61,34,0.08)]">
+                <div className="paper-card rounded-[1.5rem] p-3 sm:p-5 lg:p-6">
+                  <button onClick={() => setLightbox(true)} className="group w-full text-left">
+                    <div className="overflow-auto x-scroll rounded-[1.25rem] border border-[rgba(196,154,90,0.35)] bg-[#f6efe7] max-h-[78vh]">
+                      <img src={menuPoster} alt="Menu poster" className="w-full h-auto min-w-[760px] block group-hover:scale-[1.01] transition-transform duration-300" />
+                    </div>
+                  </button>
+                  <div className="mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <p className="font-display text-2xl text-burgundy">Browse our original menu poster</p>
+                      
+                    </div>
+                    <button onClick={() => setLightbox(true)} className="rounded-full border border-burgundy/30 px-5 py-3 text-sm font-medium text-burgundy hover:bg-burgundy hover:text-cream transition-colors">Open zoom viewer</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="menu" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <div className="mb-8">
+                <p className="text-sm uppercase tracking-[0.35em] text-jade">Interactive Full Menu</p>
+                <h2 className="mt-2 font-display text-4xl sm:text-5xl text-burgundy">A menu room with a heritage sidebar.</h2>
+                
+              </div>
+
+              <div className="paper-card rounded-[2.4rem] p-4 sm:p-5 lg:p-6 grid xl:grid-cols-[340px_minmax(0,1fr)] gap-6 lg:gap-8 items-stretch xl:h-[86vh] min-h-0">
+                <aside className="rounded-[1.8rem] border border-burgundy/10 bg-white/45 p-4 sm:p-5 overflow-auto menu-scroll xl:max-h-[86vh]">
+                  <div className="pb-4 border-b border-burgundy/10">
+                    <p className="text-xs uppercase tracking-[0.28em] text-burgundy">Menu</p>
+                    <p className="mt-2 text-sm leading-6 text-espresso/68"></p>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {groupedSidebar.map((group) => (
+                      <button key={group.title} onClick={() => selectMenuCategory(group.title)} className={`w-full rounded-[1.25rem] px-4 py-4 text-left border transition-all ${activeCategory === group.title ? 'bg-burgundy text-cream border-burgundy shadow-[0_10px_24px_rgba(139,38,53,0.16)]' : 'bg-white/60 text-burgundy border-burgundy/10 hover:border-burgundy/30 hover:bg-white/80'}`}>
+                        <span className="block text-[11px] uppercase tracking-[0.35em] opacity-70">Menu Chapter</span><span className="block mt-1 font-menuTitle text-[2rem] leading-none tracking-[0.06em]">{group.title}</span>
+                      </button>
+                    ))}
+                  </div>
+                </aside>
+
+                <div className="min-w-0 min-h-0 flex flex-col">
+                  <div id="currentCategoryTop" className="scroll-mt-28 rounded-[1.8rem] border border-gold/20 bg-white/55 p-5 sm:p-6 shrink-0">
+                    <div className="flex flex-col lg:flex-row gap-4 lg:items-end lg:justify-between">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.25em] text-espresso/55">Current Selection</p>
+                        <h3 className="mt-2 font-display text-3xl text-burgundy">{activeCategory}</h3>
+                      </div>
+                      <div className="w-full lg:max-w-md">
+                        <label className="text-xs uppercase tracking-[0.25em] text-espresso/60">Search this section</label>
+                        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={`Search ${activeCategory.toLowerCase()}...`} className="mt-3 w-full rounded-2xl border border-burgundy/15 bg-white/70 px-4 py-3 text-sm outline-none focus:border-burgundy/40" />
+                      </div>
+                    </div>
+
+                                        {isDrinkCategory && (
+                      <div className="mt-5 flex flex-wrap items-center gap-3">
+                        <span className="text-xs uppercase tracking-[0.25em] text-espresso/60">Select serving</span>
+                        {['hot', 'cold'].map((mode) => (
+                          <button key={mode} onClick={() => setDrinkMode(mode)} className={`rounded-full px-4 py-2 text-sm border transition-colors ${drinkMode === mode ? 'bg-gold text-espresso border-gold' : 'border-gold/25 bg-white/55 text-espresso hover:border-gold/55'}`}>{mode[0].toUpperCase() + mode.slice(1)}</button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div id="menuCardsTop" className="scroll-mt-28 mt-5 pr-2 overflow-y-auto menu-scroll min-h-0 flex-1">
+                    <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-5 auto-rows-max content-start">
+                      {filteredMenu.map((item, i) => (
+                        <motion.article
+                          layout
+                          key={item.name + i}
+                          initial={{ opacity: 0, y: 18 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -12 }}
+                          transition={{ duration: 0.25, delay: i * 0.01 }}
+                          whileHover={{ y: -6 }}
+                          className="paper-card rounded-[1.6rem] p-5 relative overflow-hidden h-auto min-h-[390px]"
+                        >
+                          <div className="absolute top-0 right-0 h-24 w-24 bg-gradient-to-bl from-gold/10 to-transparent rounded-full" />
+                          <div className="relative">
+                            <div className="mb-5 rounded-[1.25rem] overflow-hidden border border-white/70 shadow-sm bg-white">
+                              <img src={menuItemImages[item.name]} alt={item.name} className="w-full h-44 object-cover" />
+                            </div>
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="text-[11px] uppercase tracking-[0.38em] text-gold">{item.category}</p>
+                                <h3 className="mt-2 font-menuItem text-[2.15rem] text-burgundy leading-[0.95] tracking-[0.01em]">{item.name}</h3>
+                              </div>
+                              <div className="text-right shrink-0">
+                                {item.recommended && <span className="inline-block rounded-full bg-burgundy text-cream px-3 py-1 text-xs mb-2">Recommended</span>}
+                                <div className="inline-flex flex-col items-end">
+                                  <span className="text-[10px] uppercase tracking-[0.28em] text-gold">House Price</span>
+                                  <span className="mt-1 inline-flex items-center rounded-full border border-gold/40 bg-[linear-gradient(135deg,rgba(196,154,90,0.18),rgba(255,255,255,0.7))] px-4 py-2 font-display text-xl text-burgundy shadow-sm">{getPrice(item, isDrinkCategory ? drinkMode : 'all')}</span>
+                                </div>
+                              </div>
+                            </div>
+                            {item.tag && <p className="mt-3 inline-flex rounded-full border border-jade/20 bg-jade/10 text-jade px-3 py-1 text-[11px] uppercase tracking-[0.28em]">{item.tag}</p>}
+                            {item.note && <p className="mt-4 text-sm leading-7 text-espresso/68">{item.note}</p>}
+                          </div>
+                        </motion.article>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="cakes" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+              <div>
+                <p className="text-sm uppercase tracking-[0.35em] text-gold">Our Signature Cakes</p>
+                <h2 className="mt-2 font-menuTitle text-5xl sm:text-6xl text-burgundy leading-none">Cake Cabinet</h2>
+                
+                <div className="mt-6 vintage-frame rounded-[2rem] p-3 bg-[rgba(95,61,34,0.08)]">
+                  <div className="overflow-hidden rounded-[1.4rem] bg-[#f6efe7]">
+                    <img src={cakePoster} alt="Cake cabinet reference" className="w-full h-auto block" />
+                  </div>
+                </div>
+
+                <div className="mt-6 sticky top-20 z-30 rounded-[1.5rem] border border-jade/15 bg-[rgba(247,241,232,0.9)] backdrop-blur-md px-4 py-4 shadow-[0_10px_28px_rgba(43,26,18,0.08)]">
+                  <div className="flex flex-wrap gap-3">
+                    {['All', 'Cheesecake', 'Fruit', 'Chocolate / Coffee', 'Heritage Flavors', 'Durian Specials'].map((tag) => (
+                      <button key={tag} onClick={() => setCakeFilter(tag)} className={`rounded-full px-4 py-2 text-sm border transition-colors ${cakeFilter === tag ? 'bg-jade text-cream border-jade' : 'border-jade/20 bg-white/70 text-espresso hover:border-jade/55'}`}>{tag}</button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-8 grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                  {filteredCakes.map((cake, i) => (
+                    <motion.article key={cake.name} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.015 }} whileHover={{ y: -8 }} className="paper-card rounded-[1.7rem] overflow-hidden">
+                      <div className="bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.7),transparent_40%),linear-gradient(135deg,rgba(139,38,53,0.12),rgba(196,154,90,0.1),rgba(78,124,89,0.12))] p-4 relative">
+                        <div className="absolute inset-0 opacity-18 bg-tile" style={{ backgroundSize: '28px 28px' }} />
+                        <div className="relative w-full aspect-square rounded-[1.6rem] overflow-hidden border border-white/80 shadow-lg bg-white">
+                          <img src={cakeImages[cake.name]} alt={cake.name} className="w-full h-full object-cover" />
+                        </div>
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="min-w-0 pr-2">
+                            <p className="text-xs uppercase tracking-[0.25em] text-jade">{cake.tag}</p>
+                            <h3 className="mt-2 font-menuItem text-[2.15rem] text-burgundy leading-[0.95] tracking-[0.01em]">{cake.name}</h3>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-burgundy text-cream px-3 py-1 text-sm">{cake.price}</span>
+                        </div>
+                        <p className="mt-4 text-sm leading-7 text-espresso/68">{cake.note}</p>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 overflow-hidden">
+              <div className="flex items-end justify-between gap-4 mb-8">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.35em] text-burgundy">Cake Showcase Experience</p>
+                  <h2 className="mt-2 font-display text-4xl text-burgundy">Vintage postcards from the café.</h2>
+                </div>
+              </div>
+              <div className="overflow-hidden pb-4">
+                <div className="flex gap-5 w-max animate-[postcardMarquee_28s_linear_infinite] hover:[animation-play-state:paused]">
+                  {[...showcasePanels, ...showcasePanels].map((panel, i) => (
+                    <motion.div key={panel.title + '-' + i} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: (i % showcasePanels.length) * 0.05 }} className="min-w-[280px] sm:min-w-[360px] lg:min-w-[420px] paper-card rounded-[2rem] p-6 relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-25 bg-tile" style={{ backgroundSize: '34px 34px' }} />
+                      <div className="relative">
+                        <div className="aspect-[5/3] rounded-[1.6rem] bg-[linear-gradient(135deg,rgba(139,38,53,0.14),rgba(196,154,90,0.18),rgba(49,93,124,0.15))] border border-white/60 flex items-end p-5">
+                          <div>
+                            <p className="text-xs uppercase tracking-[0.3em] text-cream/90">Memory panel {String((i % showcasePanels.length) + 1).padStart(2,'0')}</p>
+                            <h3 className="mt-3 font-display text-3xl text-cream">{panel.title}</h3>
+                          </div>
+                        </div>
+                        <p className="mt-5 text-sm leading-7 text-espresso/70">{panel.copy}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-18">
+              <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 lg:gap-8 items-start">
+                <div className="paper-card rounded-[2rem] p-6 lg:p-8 border-l-8 border-burgundy">
+                  <p className="text-sm uppercase tracking-[0.35em] text-burgundy">Opening Hours</p>
+                  <h2 className="mt-3 font-display text-4xl text-burgundy">Old café notice</h2>
+                  <div className="mt-6 space-y-4 text-espresso">
+                    <div className="rounded-2xl bg-white/70 p-4">
+                      <p className="text-sm uppercase tracking-[0.2em] text-espresso/55">Operating hours</p>
+                      <p className="mt-2 text-2xl font-display">11:30AM – 9:00PM</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/70 p-4">
+                      <p className="text-sm uppercase tracking-[0.2em] text-espresso/55">Kitchen note</p>
+                      <p className="mt-2 text-2xl font-display">Kitchen closed at 8PM daily</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/70 p-4 rotate-[-1deg] shadow-float">
+                      <p className="text-sm uppercase tracking-[0.2em] text-espresso/55">Closed</p>
+                      <p className="mt-2 text-2xl font-display">Tuesday & Wednesday</p>
+                    </div>
+                  </div>
+                </div>
+                <div id="visit" className="paper-card rounded-[2rem] p-6 lg:p-8 relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-25 bg-tile" style={{ backgroundSize: '42px 42px' }} />
+                  <div className="relative">
+                    <p className="text-sm uppercase tracking-[0.35em] text-jade">Find Passion Heart</p>
+                    <h2 className="mt-2 font-display text-4xl text-burgundy">A graceful placeholder for map, reviews and contact details.</h2>
+                    <div className="mt-6 grid md:grid-cols-[1.1fr_0.9fr] gap-5">
+                      <div className="rounded-[1.6rem] border border-burgundy/15 bg-[linear-gradient(135deg,rgba(49,93,124,0.12),rgba(255,255,255,0.55))] min-h-[280px] p-5 flex flex-col justify-between">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.25em] text-porcelain">Map placeholder</p>
+                          
+                        </div>
+                        <a href="https://www.google.com/maps?sca_esv=f310ec5ab07cd165&biw=1536&bih=695&output=search&q=passion+heart&source=lnms&fbs=ADc_l-Z6XGGbkKmpylZqg2J7ZOuVNvV7jKtLqzLZ63dd2zPtrtz7pbgPQZjmSYx4eJSqyh8G70evroeQsX65tolzA1fpOMI8wuAHsfR7EgCk5g_VvutoMtV6kyHk6pJffZX-6TURfIcxuD9fQvcXLTRSfdpdZzJs3RIBcN6gPf1ai0xZgrzpB1Jgqggj4hqajM8IOQcUL_VudIaJ3P5xhyggm90R2F8oEA&entry=mc&ved=1t:200715&ictx=111" target="_blank" rel="noreferrer" className="self-start rounded-full bg-porcelain text-cream px-5 py-3 text-sm hover:opacity-90 transition-opacity">Open in Google Maps</a>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="rounded-[1.4rem] bg-white/70 border border-white/60 p-5">
+                          <p className="text-xs uppercase tracking-[0.25em] text-gold">Google business card</p>
+                          <p className="mt-3 font-display text-2xl text-burgundy">Nely’s Passion Heart</p>
+                          
+                          <div className="mt-4 flex flex-wrap gap-3">
+                            <a href="https://www.facebook.com/passionheartcafe" target="_blank" rel="noreferrer" className="rounded-full border border-jade/25 bg-white/70 px-4 py-2 text-sm text-jade hover:bg-jade hover:text-cream transition-colors">Facebook</a>
+                            <a href="https://wa.me/60164431336" target="_blank" rel="noreferrer" className="rounded-full border border-burgundy/20 bg-white/70 px-4 py-2 text-sm text-burgundy hover:bg-burgundy hover:text-cream transition-colors">WhatsApp Café</a>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-3">
+                          <a href="https://www.google.com/search?sca_esv=f310ec5ab07cd165&sxsrf=ANbL-n7sIjnoHXJckOmkJTXiLD2NqVmdIA:1777792415522&si=AL3DRZFIhG6pAqfNLal55wUTwygCG0fClF3UxiOmgw9Hq7nbWeM_872jREYuAhbwaOVMc7fxamMramh92hWH1lQKJC9BnfoEW3L-fQuFCGrrXAn7PcLq0eF-HnL8zcSXJHCjAHTtCGFOmnmNFKr9LcPc1CnjaoZnzw%3D%3D&q=Nely%27s+Passion+Heart+%E8%AF%84%E4%BB%B7&sa=X&ved=2ahUKEwipmKXryJyUAxWAR2wGHWTtExkQ0bkNegQIKBAH&biw=1536&bih=695&dpr=1.25" target="_blank" rel="noreferrer" className="rounded-full border border-burgundy/25 px-4 py-3 text-sm text-burgundy hover:bg-burgundy hover:text-cream transition-colors">View Reviews</a>
+                          <a href="tel:0164431336" className="rounded-full border border-gold/30 px-4 py-3 text-sm text-espresso hover:bg-gold/10 transition-colors">Call Café</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </main>
+
+          <footer className="mt-12 border-t border-burgundy/10 bg-[rgba(139,38,53,0.96)] text-cream relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-4 tile-strip opacity-60" />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
+              <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
+                <div>
+                  <p className="font-script text-4xl">Nely’s Passion Heart</p>
+                  <p className="mt-2 text-sm tracking-[0.3em] uppercase text-cream/75">Since 2013</p>
+                  <p className="mt-4 text-sm text-cream/75">Homemade Cake • Coffee • Tea • Comfort Food</p>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <a href="https://www.facebook.com/passionheartcafe" target="_blank" rel="noreferrer" className="rounded-full border border-cream/25 px-4 py-2 text-sm hover:bg-cream hover:text-burgundy transition-colors">Facebook</a>
+                  <a href="https://wa.me/60164431336" target="_blank" rel="noreferrer" className="rounded-full border border-cream/25 px-4 py-2 text-sm hover:bg-cream hover:text-burgundy transition-colors">WhatsApp</a>
+                  <a href="#top" className="rounded-full bg-cream text-burgundy px-5 py-3 text-sm font-medium">Back to top</a>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+          <AnimatePresence>
+            {lightbox && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-[rgba(27,15,10,0.86)] backdrop-blur-md p-4 sm:p-8" onClick={() => setLightbox(false)}>
+                <div className="max-w-6xl mx-auto h-full flex flex-col">
+                  <div className="flex items-center justify-between gap-4 text-cream mb-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.3em] text-cream/60">Zoom viewer</p>
+                      <h3 className="font-display text-3xl">Nely’s Passion Heart Menu Poster</h3>
+                    </div>
+                    <button className="rounded-full border border-cream/30 px-4 py-2 text-sm" onClick={() => setLightbox(false)}>Close</button>
+                  </div>
+                  <div className="flex-1 min-h-0 overflow-auto rounded-[2rem] bg-[#f6efe7] p-3 sm:p-5 x-scroll">
+                    <img src={menuPoster} alt="Nely’s Passion Heart Menu Poster" className="w-full h-auto rounded-[1.2rem] shadow-2xl min-w-[760px]" onClick={(e) => e.stopPropagation()} />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
